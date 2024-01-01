@@ -58,7 +58,6 @@ def create_visitors_from_tsv(file_path: str) -> list[Visitor]:
 
             visitor = Visitor(visitor_id, visits)
             visitors.append(visitor)
-
         return visitors
     except FileNotFoundError:
         return []
@@ -86,9 +85,9 @@ def store_visitors(page: Optional[int] = 1, page_size: Optional[int] = 10) -> JS
     try:
         start_index = (page - 1) * page_size
         end_index = start_index + page_size
-        paginated_visitors = visitor_list[start_index:end_index]
+        paginated_visitors: [Visitor] = visitor_list[start_index:end_index]
 
-        return JSONResponse(content=jsonable_encoder(paginated_visitors), status_code=200)
+        return JSONResponse(content=jsonable_encoder({"paginated_visitors": paginated_visitors, "total_visitors":len(visitor_list) }), status_code=200)
     except Exception as e:
         return JSONResponse(content=str(e), status_code=500)
 
@@ -128,4 +127,7 @@ async def get_documentation():
 
 
 if __name__ == "__main__":
+
+    visitor_list = visitor_list
+    print(visitor_list)
     uvicorn.run(app, host="localhost", port=3000)
