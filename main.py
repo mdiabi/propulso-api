@@ -59,11 +59,14 @@ def create_visitors_from_tsv(file_path: str) -> list[Visitor]:
             visitor = Visitor(visitor_id, visits)
             visitors.append(visitor)
         return visitors
-    except FileNotFoundError:
+    except FileNotFoundError as e:
+        print(f"File not found error: {e}")
         return []
-    except pd.errors.EmptyDataError:
+    except pd.errors.EmptyDataError as e:
+        print(f"Empty data error: {e}")
         return []
-    except pd.errors.ParserError:
+    except pd.errors.ParserError as e:
+        print(f"Parser error: {e}")
         return []
 
 visitor_list: list[Visitor] = create_visitors_from_tsv('dataset_before_after.tsv')
